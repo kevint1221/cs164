@@ -125,6 +125,10 @@ def clientthread(conn):
 			data = conn.recv(1024)
 			print 'the length of input is:'
 			print (len(data))
+			if (data == 'cancel'):
+				print "it is cancel"
+			else:
+				print "not cancel"
 			if(data[0:1] == '1'): #see offline message
 				conn.send('    YOUR OFFLINE MESSAGE BOX\n')
 				for i in range (len(user_sub[current_user])):  #loop in user's subscription
