@@ -125,7 +125,7 @@ def clientthread(conn):
 			data = conn.recv(1024)
 			print 'the length of input is:'
 			print (len(data))
-			if (data == 'cancel'):
+			if (data[:-3] == 'cancel'):
 				print "it is cancel"
 			else:
 				print "not cancel"
