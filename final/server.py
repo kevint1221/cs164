@@ -139,7 +139,7 @@ def clientthread(conn):
 			elif(data[0:1] == '3'): #post message
 				conn.send('    ENTER MESSAGE:\n')
 				message = 150
-				while(len(message) > 140):
+				while(message > 140):
 					message = conn.recv(1024)
 					if (len(message) > 140):
 						conn.send("enter too many character!!!\n")
