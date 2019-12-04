@@ -154,7 +154,7 @@ def clientthread(conn):
 				if (hashtag not in hash_tag):
 					hash_tag.append(hashtag)
 					hash_tag_list.append([])
-					hash_tag_list[-1].append(hashtag)
+					hash_tag_list[-1].append(message)
 				else:
 					for i in range(len(hash_tag)): ##find the hashtag
 						if (hashtag == hash_tag[i]):
