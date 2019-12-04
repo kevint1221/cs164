@@ -230,7 +230,6 @@ def clientthread(conn):
 #now keep talking with the client
 while 1:
 	#wait to accept a connection - blocking call
-	select = raw_input("enter your selection:\n")
 	conn, addr = s.accept()
 	print 'Connected with ' + addr[0] + ':' + str(addr[1])
 	#start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
