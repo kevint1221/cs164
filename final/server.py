@@ -158,7 +158,7 @@ def clientthread(conn):
 				else:
 					for i in range(len(hash_tag)): ##find the hashtag
 						if (hashtag == hash_tag[i]):
-							hash_tag_list[i].append(hashtag) ##add hashtag to the list
+							hash_tag_list[i].append(message) ##add hashtag to the list
 							break 
 
 				time.sleep(0.2)
