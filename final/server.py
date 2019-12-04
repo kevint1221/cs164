@@ -51,7 +51,7 @@ data = 0
 def clientthread(conn):
 	#Sending message to connected client
 	conn.send('Welcome to the server\n') #send only takes string
-	conn.send('enter your username\n')
+	conn.send('Enter your username: ')
 	data = conn.recv(1024)
 	
 	current_user = -1
@@ -88,7 +88,7 @@ def clientthread(conn):
 				user_sub.append([])
 				user_new_message.append([])
 
-			conn.send('enter your password\n')
+			conn.send('Enter your password: ')
 			password = conn.recv(1024)
 			conn.send('\n')
 
@@ -100,10 +100,10 @@ def clientthread(conn):
 							for j in range(len(user_new_message[x])): 
 								number_new_message +=1
 
-			conn.send('you have ')
+			conn.send('              YOU HAVE ')
 			conn.send(str(number_new_message))
 
-			conn.send(' new message\n')
+			conn.send(' NEW MESSAGE\n')
 
 			process = 2 
 
@@ -111,27 +111,28 @@ def clientthread(conn):
 			time.sleep(0.5)
 			conn.send('\n\n')
 			conn.send('============================================================\n')
-			conn.send('    1) see offline message\n')
-			conn.send('    2) edit subscriptions\n')
-			conn.send('    3) post message\n')
-			conn.send('    4) see your followers\n')
-			conn.send('    5) hashtag search\n')
-			conn.send('    6) see your post\n')
-			conn.send('    10) logout\n')
-			conn.send('    back to go back to menu at anytime\n')
-			conn.send('select menu option: ')
+			conn.send('||    1) See offline message    ||\n')
+			conn.send('||    2) Edit subscriptions     ||\n')
+			conn.send('||    3) Post message           ||\n')
+			conn.send('||    4) See your followers     ||\n')
+			conn.send('||    5) Search hashtag         ||\n')
+			conn.send('||    6) See your post          ||\n')
+			conn.send('||    10) Logout                ||\n\n')
+			conn.send('||    SELECT MENU OPTION: ')
 			process = 3
 		elif(process ==3):
 			data = conn.recv(1024)
 			if(data[0:1] == '1'): #see offline message
-				conn.send('    YOUR OFFLINE MESSAGE BOX\n')
+				conn.send('\n\n            YOUR OFFLINE MESSAGE BOX\n')
+				conn.send('            ====================\n\n')
 				for i in range (len(user_sub[current_user])):  #loop in user's subscription
 					for x in range(len(users)): #loop through all user
 						if(user_sub[current_user][i] == users[x]): ## if user's subscription match the user list
-							conn.send('\nmessage from: ')
+							conn.send('\nMESSAGE FROM: ')
 							conn.send(users[x])
 							for j in range(len(user_new_message[x])): 
 								conn.send(user_new_message[x][j]) #print all new message out
+								conn.send('============================================================\n')
 
 
 				time.sleep(0.5)
@@ -140,19 +141,21 @@ def clientthread(conn):
 			
 			elif(data[0:1] == '3'): #post message
 				message = "hi"
-				conn.send('    ENTER MESSAGE type cancel to go back:\n')
+				conn.send('\n\n										Type cancel to go back:\n')
+				conn.send('    ENTER MESSAGE:\n')
 				message_length = 150
 				while(message_length > 140):
 					message = conn.recv(1024)
 					if (len(message) > 140):
-						conn.send("enter too many character!!!\n")
-						conn.send("    REENTER MESSAGE or type cancel to go back:\n")
+						conn.send('\n\n										Type cancel to go back:\n')
+						conn.send("    You enter too many character!!!\n")
+						conn.send("    ENTER MESSAGE AGAIN:\n")
 					else:
 						message_length = 10
 				if(message[:-2] != 'cancel' and len(message) != 6):
 					user_message[current_user].append(message)
 					user_new_message[current_user].append(message)
-					conn.send("enter hashtage for this post:\n")
+					conn.send("    enter hashtage for this post:\n")
 					hashtag = conn.recv(1024)
 					if (hashtag not in hash_tag):
 						hash_tag.append(hashtag)
@@ -166,56 +169,63 @@ def clientthread(conn):
 
 				time.sleep(0.2)
 			elif(data[0:1] == '2'):
-				conn.send('    1) add subscription\n')
-				conn.send('    2) drop subscription\n')
-				conn.send('    type cancel to go back\n')
+				conn.send('\n\n										Type cancel to go back:\n')
+				conn.send('||    1) Add subscription       ||\n')
+				conn.send('||    2) Drop subscription      ||\n')
 				message = conn.recv(1024)
 				if(message[:-2] != 'cancel' and len(message)-2 != 6):
 					if (message[0:1] == '1'):
-						conn.send('        current user :\n')
+						conn.send('\n        CURRENT USER :\n')
+						conn.send('==============================\n')
+
 						for i in users:
 							if (i != users[current_user]):
 								conn.send('    ')
 								conn.send(i)
 								conn.send('\n')
-						conn.send('which user you want to subscribe to?\n')
-						conn.send('    type cancel to go back\n')
+						conn.send('\n\n										Type cancel to go back:\n')		
+						conn.send('    Which user you want to subscribe to?\n')
 						select = conn.recv(1024)
 						if(select[:-2] != 'cancel' and len(select)-2 != 6):
 							##print(select[:len(select)-1])
 							if (select[:len(select)]) in users: 
 								user_sub[current_user].append(select[:len(select)]) ## receive message always has \n at the end
-								conn.send('added subscription successfully!\n')
+								conn.send('Added subscription successfully!\n')
 							else:
-								conn.send("user doesn't exist\n")
+								conn.send("User doesn't exist\n")
 					elif(message[0:1] =='2'):
-						conn.send('        your current subscription\n')
+						conn.send('\n        YOUR CURRENT SUBSCRIPTIONS\n')
 						for i in range (len(user_sub[current_user])):
-								conn.send('    ')
+								conn.send('||    ')
 								conn.send(user_sub[current_user][i])
-								conn.send('\n')
-						conn.send('which user you want to delete?\n')
-						conn.send('    type cancel to go back\n')
+								conn.send('                 ||\n')
+						conn.send('\n\n										Type cancel to go back:\n')			
+						conn.send('    which user you want to delete?\n')
 						select = conn.recv(1024)
 						if(select[:-2] != 'cancel' and len(select)-2 != 6):
 							if (select[:len(select)]) in user_sub[current_user]:  ## 
 								user_sub[current_user].remove(select[:len(select)])
-								conn.send('removed subscription successfully!\n')
+								conn.send('Removed subscription successfully!\n')
 							else:
-								conn.send("user doesn't exist in your subscription\n")
+								conn.send("User doesn't exist in your subscription\n")
 			elif(data[0:1] == '5'):
-				conn.send("enter the hashtag you want to search:\n")
-				conn.send('    type cancel to go back\n')
+				conn.send('\n\n										Type cancel to go back:\n')	
+				conn.send("    Enter the hashtag you want to search:\n")
 				hashtag = conn.recv(1024)
 				if(hashtag[:-2] != 'cancel' and len(hashtag)-2 != 6):
 					if hashtag in hash_tag:
 						conn.send("    here is the hashtag found:\n")
+						conn.send('=================================\n')
 						for i in range (len(hash_tag)):
 							if (hashtag == hash_tag[i]):
 								for j in range (len(hash_tag_list[i])):
+									conn.send('||    ')
 									conn.send(hash_tag_list[i][j])
+									conn.send('				||\n')
+									
 			elif(data[0:1] == '4'):
 				conn.send("    HERE IS YOUR FOLLOWERS\n")
+				conn.send('===============================\n')
 				for i in range(len(user_sub)):
 					if (users[current_user] in user_sub[i]):
 						conn.send(users[i])
