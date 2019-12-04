@@ -19,7 +19,7 @@ a[1].append(4)
 a[1].append(5)
 a[1].append(6)
 
-a.append([])
+
 
 '''
 for x in range (len(a[1])):
@@ -60,4 +60,8 @@ print('now print first list')
 for x in range (len(a[0])):
 	print(a[0][x])
 
-	
+print("length of a is: ")
+print(len(a))
+
+if 1 not in a:
+	print("not in ")

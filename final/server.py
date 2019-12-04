@@ -39,6 +39,12 @@ user_new_message = []
 
 user_sub = []
 
+#index
+hash_tag = []
+#hash_tag stored
+hash_tag_list = []
+
+
 data = 0
 
 #Function for handling connections. This will be used to create threads
@@ -132,9 +138,26 @@ def clientthread(conn):
 			
 			elif(data[0:1] == '3'): #post message
 				conn.send('    ENTER MESSAGE:\n')
-				message = conn.recv(1024)
+				message = 150
+				while(len(message) > 140):
+					message = conn.recv(1024)
+					if (len(message) > 140):
+						conn.send("enter too many character!!!\n")
+						conn.send("    REENTER MESSAGE:\n")
 				user_message[current_user].append(message)
 				user_new_message[current_user].append(message)
+				conn.send("enter hashtage for this post:\n")
+				hashtag = conn.recv(1024)
+				if (hashtag not in hash_tag):
+					hash_tag.append(hashtag)
+					hash_tag_list.append([])
+					hash_tag_list[-1].append(hashtag)
+				else:
+					for i in range(len(hash_tag)): ##find the hashtag
+						if (hashtag == hash_tag[i]):
+							hash_tag_list[i].append(hashtag) ##add hashtag to the list
+							break 
+
 				time.sleep(0.2)
 			elif(data[0:1] == '2'):
 				conn.send('    1) add subscription\n')
