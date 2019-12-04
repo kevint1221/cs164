@@ -211,7 +211,7 @@ def clientthread(conn):
 								conn.send("User doesn't exist in your subscription\n")
 			elif(data[0:1] == '5'):
 				conn.send('\n\n								Type cancel to go back:\n')	
-				conn.send("    Enter the hashtag you want to search:\n")
+				conn.send("    Enter HASHTAG YOU WANT TO SEARCH:\n")
 				hashtag = conn.recv(1024)
 				if(hashtag[:-2] != 'cancel' and len(hashtag)-2 != 6):
 					if hashtag in hash_tag:
@@ -222,7 +222,7 @@ def clientthread(conn):
 								for j in range (len(hash_tag_list[i])):
 									conn.send('||    ')
 									conn.send(hash_tag_list[i][j])
-									conn.send('-------------||\n')
+									conn.send('---------------------------||\n')
 									
 			elif(data[0:1] == '4'):
 				conn.send("    HERE IS YOUR FOLLOWERS\n")
