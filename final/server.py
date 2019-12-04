@@ -208,12 +208,12 @@ def clientthread(conn):
 				conn.send('    type cancel to go back\n')
 				hashtag = conn.recv(1024)
 				if(hashtag[:-2] != 'cancel' and len(hashtag)-2 != 6):
-				if hashtag in hash_tag:
-					conn.send("    here is the hashtag found:\n")
-					for i in range (len(hash_tag)):
-						if (hashtag == hash_tag[i]):
-							for j in range (len(hash_tag_list[i])):
-								conn.send(hash_tag_list[i][j])
+					if hashtag in hash_tag:
+						conn.send("    here is the hashtag found:\n")
+						for i in range (len(hash_tag)):
+							if (hashtag == hash_tag[i]):
+								for j in range (len(hash_tag_list[i])):
+									conn.send(hash_tag_list[i][j])
 			elif(data[0:1] == '4'):
 				conn.send("    HERE IS YOUR FOLLOWERS\n")
 				for i in range(len(user_sub)):
