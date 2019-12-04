@@ -196,7 +196,15 @@ def clientthread(conn):
 						conn.send('removed subscription successfully!\n')
 					else:
 						conn.send("user doesn't exist in your subscription\n")
-
+			elif(data[0:1] == '5'):
+				conn.send("enter the hashtag you want to search:\n")
+				hashtag = conn.recv(1024)
+				if hashtag in hash_tag:
+					conn.send("    here is the hashtag found:\n")
+					for i in range (len(hash_tag)):
+						if (hashtag == hash_tag[i]):
+							for j in range (hash_tag_list[i]):
+								conn.send(hash_tag_list[i][j])
 
 
 			process = 2
