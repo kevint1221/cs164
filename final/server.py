@@ -62,7 +62,7 @@ def clientthread(conn):
 	#infinite loop so that function do not terminate and thread do not end.
 	while True:
 		#Receiving from client
-		if data[0:4] == "quit" or data[0:1] == "4":
+		if data[0:4] == "quit" or data[0:1] == "10":
 			for member in clients:
 				if conn == member:
 					print 'removing from list'
@@ -114,9 +114,10 @@ def clientthread(conn):
 			conn.send('    1) see offline message\n')
 			conn.send('    2) edit subscriptions\n')
 			conn.send('    3) post message\n')
-			conn.send('    4) logout\n')
+			conn.send('    4) see your followers\n')
 			conn.send('    5) hashtag search\n')
 			conn.send('    6) see your post\n')
+			conn.send('    10) logout\n')
 			conn.send('select menu option: ')
 			process = 3
 		elif(process ==3):
@@ -154,11 +155,11 @@ def clientthread(conn):
 				if (hashtag not in hash_tag):
 					hash_tag.append(hashtag)
 					hash_tag_list.append([])
-					hash_tag_list[-1].append( "this message from: ",users[current_user], " ",message)
+					hash_tag_list[-1].append(message)
 				else:
 					for i in range(len(hash_tag)): ##find the hashtag
 						if (hashtag == hash_tag[i]):
-							hash_tag_list[i].append("this message from: ",users[current_user], " ",message) ##add hashtag to the list
+							hash_tag_list[i].append(message) ##add hashtag to the list
 							break 
 
 				time.sleep(0.2)
@@ -167,7 +168,7 @@ def clientthread(conn):
 				conn.send('    2) drop subscription\n')
 				message = conn.recv(1024)
 				if (message[0:1] == '1'):
-					conn.send('        current user:\n')
+					conn.send('        current user :\n')
 					for i in users:
 						if (i != users[current_user]):
 							conn.send('    ')
@@ -205,7 +206,11 @@ def clientthread(conn):
 						if (hashtag == hash_tag[i]):
 							for j in range (len(hash_tag_list[i])):
 								conn.send(hash_tag_list[i][j])
-
+			elif(data[0:1] == '4'):
+				conn.send("    HERE IS YOUR FOLLOWERS\n")
+				for i in range(len(user_sub)):
+					if (users[current_user] in user_sub[i]):
+						conn.send(users[i])
 
 			process = 2
 
@@ -225,9 +230,9 @@ def clientthread(conn):
 #now keep talking with the client
 while 1:
 	#wait to accept a connection - blocking call
+	select = raw_input("enter your selection:\n")
 	conn, addr = s.accept()
 	print 'Connected with ' + addr[0] + ':' + str(addr[1])
-	
 	#start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
 	start_new_thread(clientthread ,(conn,))
 

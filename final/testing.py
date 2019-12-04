@@ -65,3 +65,7 @@ print(len(a))
 
 if 1 not in a:
 	print("not in ")
+
+message = ("this message from : ",a[0][0])
+
+print message
