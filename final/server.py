@@ -180,9 +180,12 @@ def clientthread(conn):
 							conn.send('\n')
 					conn.send('which user you want to subscribe to?\n')
 					select = conn.recv(1024)
-					##print(select[:len(select)-1])
-					if (select[:-2]) in users: 
-						user_sub[current_user].append(select[:-2]) ## receive message always has \n at the end
+					
+					print 'the length of input is:'
+					print (len(data))
+					print(select)
+					if (select[0:-2]) in users: 
+						user_sub[current_user].append(select[0:-2]) ## receive message always has \n at the end
 						conn.send('added subscription successfully!\n')
 					else:
 						conn.send("user doesn't exist\n")
