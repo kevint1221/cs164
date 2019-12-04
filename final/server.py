@@ -141,7 +141,7 @@ def clientthread(conn):
 			
 			elif(data[0:1] == '3'): #post message
 				message = "hi"
-				conn.send('\n\n										Type cancel to go back:\n')
+				conn.send('\n\n								Type cancel to go back:\n')
 				conn.send('    ENTER MESSAGE:\n')
 				message_length = 150
 				while(message_length > 140):
