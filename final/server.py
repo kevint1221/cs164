@@ -50,7 +50,12 @@ data = 0
 #Function for handling connections. This will be used to create threads
 def clientthread(conn):
 	#Sending message to connected client
-	conn.send('Welcome to the server\n') #send only takes string
+	conn.send('====================WELCOME TO THE SERVER======================================\n') #send only takes string
+	conn.send('=====\\\\\\====================\\====\\=======\\===============================\n')
+	conn.send('=======\\===\\=====\\======\\======\\\\\\===\\\\\\===\\\\\\====\\===\\\========\n')
+	conn.send('=======\\====\\===\\=\\===\\===\\====\\=======\\=====\\==\\====\\=\\===========\n')
+	conn.send('=======\\=====\\=\\== \\=\\====\\====\\=\\====\\=\\==\\\\======\\\=============\n')
+	conn.send('=======\\======\\======\\======\\====\\\\=====\\\\===\\\\\\====\\==============\n\n\n\n')
 	conn.send('Enter your username: ')
 	data = conn.recv(1024)
 	
