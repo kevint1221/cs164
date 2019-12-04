@@ -3,7 +3,6 @@ import sys
 import time
 from thread import *
 
-##hello12323423423
 
 HOST = ''	# Symbolic name meaning all available interfaces
 PORT = 8888	# Arbitrary non-privileged port
@@ -57,7 +56,7 @@ def clientthread(conn):
 	#infinite loop so that function do not terminate and thread do not end.
 	while True:
 		#Receiving from client
-		if data[0:4] == "quit":
+		if data[0:4] == "quit" or data[0:1] == "4":
 			for member in clients:
 				if conn == member:
 					print 'removing from list'
@@ -65,6 +64,7 @@ def clientthread(conn):
 					clients.remove(member)
 
 			break
+
 
 		if (process ==1):
 			for index, member in enumerate(users):
@@ -111,7 +111,6 @@ def clientthread(conn):
 			conn.send('    4) logout\n')
 			conn.send('    5) hashtag search\n')
 			conn.send('    6) see your post\n')
-			conn.send('    Enter quit to close connection\n')
 			conn.send('select menu option: ')
 			process = 3
 		elif(process ==3):
