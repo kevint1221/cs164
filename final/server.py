@@ -118,10 +118,13 @@ def clientthread(conn):
 			conn.send('    5) hashtag search\n')
 			conn.send('    6) see your post\n')
 			conn.send('    10) logout\n')
+			conn.send('    back to go back to menu at anytime\n')
 			conn.send('select menu option: ')
 			process = 3
 		elif(process ==3):
 			data = conn.recv(1024)
+			print 'the length of input is:'
+			print (len(data))
 			if(data[0:1] == '1'): #see offline message
 				conn.send('    YOUR OFFLINE MESSAGE BOX\n')
 				for i in range (len(user_sub[current_user])):  #loop in user's subscription
