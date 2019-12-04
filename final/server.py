@@ -117,7 +117,7 @@ def clientthread(conn):
 			conn.send('||    4) See your followers     ||\n')
 			conn.send('||    5) Search hashtag         ||\n')
 			conn.send('||    6) See your post          ||\n')
-			conn.send('||    7) Logout                ||\n\n')
+			conn.send('||    7) Logout                 ||\n\n')
 			conn.send('      SELECT MENU OPTION: ')
 			process = 3
 		elif(process ==3):
