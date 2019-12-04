@@ -118,13 +118,13 @@ def clientthread(conn):
 			conn.send('||    5) Search hashtag         ||\n')
 			conn.send('||    6) See your post          ||\n')
 			conn.send('||    10) Logout                ||\n\n')
-			conn.send('||    SELECT MENU OPTION: ')
+			conn.send('      SELECT MENU OPTION: ')
 			process = 3
 		elif(process ==3):
 			data = conn.recv(1024)
 			if(data[0:1] == '1'): #see offline message
 				conn.send('\n\n            YOUR OFFLINE MESSAGE BOX\n')
-				conn.send('            ====================\n\n')
+				conn.send('            ========================\n\n')
 				for i in range (len(user_sub[current_user])):  #loop in user's subscription
 					for x in range(len(users)): #loop through all user
 						if(user_sub[current_user][i] == users[x]): ## if user's subscription match the user list
@@ -147,7 +147,7 @@ def clientthread(conn):
 				while(message_length > 140):
 					message = conn.recv(1024)
 					if (len(message) > 140):
-						conn.send('\n\n										Type cancel to go back:\n')
+						conn.send('\n\n								Type cancel to go back:\n')
 						conn.send("    You enter too many character!!!\n")
 						conn.send("    ENTER MESSAGE AGAIN:\n")
 					else:
@@ -155,7 +155,7 @@ def clientthread(conn):
 				if(message[:-2] != 'cancel' and len(message) != 6):
 					user_message[current_user].append(message)
 					user_new_message[current_user].append(message)
-					conn.send("    enter hashtage for this post:\n")
+					conn.send("\n    ENTER HASHTAG FOR THIS POST:\n")
 					hashtag = conn.recv(1024)
 					if (hashtag not in hash_tag):
 						hash_tag.append(hashtag)
@@ -165,11 +165,12 @@ def clientthread(conn):
 						for i in range(len(hash_tag)): ##find the hashtag
 							if (hashtag == hash_tag[i]):
 								hash_tag_list[i].append(message) ##add hashtag to the list
-								break 
+								break
+					conn.send("Message posted!")
 
 				time.sleep(0.2)
 			elif(data[0:1] == '2'):
-				conn.send('\n\n										Type cancel to go back:\n')
+				conn.send('\n\n								Type cancel to go back:\n')
 				conn.send('||    1) Add subscription       ||\n')
 				conn.send('||    2) Drop subscription      ||\n')
 				message = conn.recv(1024)
@@ -180,10 +181,10 @@ def clientthread(conn):
 
 						for i in users:
 							if (i != users[current_user]):
-								conn.send('    ')
+								conn.send('==    ')
 								conn.send(i)
 								conn.send('\n')
-						conn.send('\n\n										Type cancel to go back:\n')		
+						conn.send('\n\n								Type cancel to go back:\n')		
 						conn.send('    Which user you want to subscribe to?\n')
 						select = conn.recv(1024)
 						if(select[:-2] != 'cancel' and len(select)-2 != 6):
@@ -196,10 +197,10 @@ def clientthread(conn):
 					elif(message[0:1] =='2'):
 						conn.send('\n        YOUR CURRENT SUBSCRIPTIONS\n')
 						for i in range (len(user_sub[current_user])):
-								conn.send('||    ')
+								conn.send('==    ')
 								conn.send(user_sub[current_user][i])
 								conn.send('                 ||\n')
-						conn.send('\n\n										Type cancel to go back:\n')			
+						conn.send('\n\n								Type cancel to go back:\n')			
 						conn.send('    which user you want to delete?\n')
 						select = conn.recv(1024)
 						if(select[:-2] != 'cancel' and len(select)-2 != 6):
@@ -209,7 +210,7 @@ def clientthread(conn):
 							else:
 								conn.send("User doesn't exist in your subscription\n")
 			elif(data[0:1] == '5'):
-				conn.send('\n\n										Type cancel to go back:\n')	
+				conn.send('\n\n								Type cancel to go back:\n')	
 				conn.send("    Enter the hashtag you want to search:\n")
 				hashtag = conn.recv(1024)
 				if(hashtag[:-2] != 'cancel' and len(hashtag)-2 != 6):
@@ -221,7 +222,7 @@ def clientthread(conn):
 								for j in range (len(hash_tag_list[i])):
 									conn.send('||    ')
 									conn.send(hash_tag_list[i][j])
-									conn.send('				||\n')
+									conn.send('-------------||\n')
 									
 			elif(data[0:1] == '4'):
 				conn.send("    HERE IS YOUR FOLLOWERS\n")
