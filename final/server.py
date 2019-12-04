@@ -203,7 +203,7 @@ def clientthread(conn):
 					conn.send("    here is the hashtag found:\n")
 					for i in range (len(hash_tag)):
 						if (hashtag == hash_tag[i]):
-							for j in range (hash_tag_list[i]):
+							for j in range (len(hash_tag_list[i])):
 								conn.send(hash_tag_list[i][j])
 
 
