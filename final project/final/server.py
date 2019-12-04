@@ -1,3 +1,17 @@
+## Kai Wen Tsai
+## ktsai017
+## UCR
+## CS164 Networking
+## 12/4/19
+
+### this is a server program that simulate twitter fucntion, such as posting, subscribe to others
+### see offline post etc...
+### 
+#### 1. open one terminal that run this program in python2
+####        - python server.py
+#### 2. open others terminal that telnet to the localhost with port 8888
+####        - telnet localhost 8888
+
 import socket
 import sys
 import time
@@ -31,19 +45,16 @@ clients = []
 
 # list of user
 users = []
-
-# message of each user(two dimension)
+# message of each user(two dimension) index_user, message_each_user
 user_message = []
-
+#new message to show unread message(two dimension) index_user, new_message_each_user
 user_new_message = []
-
-user_sub = []
-
-#index
+#user subscription,  index_user
+user_sub = []   
+#hashtag list
 hash_tag = []
-#hash_tag stored
+#hash_tag that stored in each hashtage list(two dimension) hashtag, messages_in_each_hashtag_list
 hash_tag_list = []
-
 
 data = 0
 
@@ -61,14 +72,14 @@ def clientthread(conn):
 	conn.send('Enter your username: ')
 	data = conn.recv(1024)
 	
+	#if new user
 	current_user = -1
 	process = 1
-	posted = 0
-
 	
 	#infinite loop so that function do not terminate and thread do not end.
 	while True:
 		#Receiving from client
+		#close the connection 
 		if data[0:4] == "quit" or data[0:1] == "7":
 			for member in clients:
 				if conn == member:
@@ -77,7 +88,6 @@ def clientthread(conn):
 					clients.remove(member)
 
 			break
-
 
 		if (process ==1):
 			for index, member in enumerate(users):
@@ -91,10 +101,12 @@ def clientthread(conn):
 				users.append(data)
 				print 'found new user: ', users[len(users)-1]
 				current_user = current_user+ len(users)
+				#create space for new user
 				user_message.append([])
 				user_sub.append([])
 				user_new_message.append([])
 
+			#password doesn't matter in here	
 			conn.send('Enter your password: ')
 			password = conn.recv(1024)
 			conn.send('\n')
@@ -102,18 +114,17 @@ def clientthread(conn):
 			#found # of new message
 			number_new_message = 0
 			for i in range (len(user_sub[current_user])):  #loop in user's subscription
-					for x in range(len(users)): #loop through all user
+					for x in range(len(users)): #loop through all users
 						if(user_sub[current_user][i] == users[x]): ## if user's subscription match the user list
 							for j in range(len(user_new_message[x])): 
 								number_new_message +=1
 
 			conn.send('              YOU HAVE ')
 			conn.send(str(number_new_message))
-
 			conn.send(' NEW MESSAGE\n')
-
 			process = 2 
 
+		#enter the selection: process2
 		elif(process == 2):
 			time.sleep(0.5)
 			conn.send('\n\n')
@@ -127,6 +138,7 @@ def clientthread(conn):
 			conn.send('||    7) Logout                 ||\n\n')
 			conn.send('      SELECT MENU OPTION: ')
 			process = 3
+		##choose the selection: process 3
 		elif(process ==3):
 			data = conn.recv(1024)
 			if(data[0:1] == '1'): #see offline message
@@ -140,10 +152,7 @@ def clientthread(conn):
 							for j in range(len(user_new_message[x])): 
 								conn.send(user_new_message[x][j]) #print all new message out
 								conn.send('============================================================\n')
-
-
 				time.sleep(0.5)
-					#conn.send(user_message[current_user][i])
 				conn.send('\n')
 			
 			elif(data[0:1] == '3'): #post message
@@ -240,16 +249,10 @@ def clientthread(conn):
 
 			process = 2
 
-
-
-
-
 		#reply = 'OK...' + data
 		if not data: 
 			break
 
-		#conn.send(reply)
-	
 	#came out of loop
 	conn.close()
 
@@ -258,7 +261,7 @@ while 1:
 	#wait to accept a connection - blocking call
 	conn, addr = s.accept()
 	print 'Connected with ' + addr[0] + ':' + str(addr[1])
-	#start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
+	#start new thread 
 	start_new_thread(clientthread ,(conn,))
 
 s.close()
