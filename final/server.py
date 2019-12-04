@@ -62,7 +62,7 @@ def clientthread(conn):
 	#infinite loop so that function do not terminate and thread do not end.
 	while True:
 		#Receiving from client
-		if data[0:4] == "quit" or data[0:1] == "10":
+		if data[0:4] == "quit" or data[0:1] == "7":
 			for member in clients:
 				if conn == member:
 					print 'removing from list'
@@ -117,7 +117,7 @@ def clientthread(conn):
 			conn.send('||    4) See your followers     ||\n')
 			conn.send('||    5) Search hashtag         ||\n')
 			conn.send('||    6) See your post          ||\n')
-			conn.send('||    10) Logout                ||\n\n')
+			conn.send('||    7) Logout                ||\n\n')
 			conn.send('      SELECT MENU OPTION: ')
 			process = 3
 		elif(process ==3):
