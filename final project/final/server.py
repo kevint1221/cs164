@@ -75,7 +75,7 @@ def clientthread(conn):
 	#if new user
 	current_user = -1
 	process = 1
-	
+	superuser = 0
 	#infinite loop so that function do not terminate and thread do not end.
 	while True:
 		#Receiving from client
@@ -88,10 +88,23 @@ def clientthread(conn):
 					clients.remove(member)
 
 			break
+		if (data[0:13] == 'administrator' and len(data)-2 == 13):
+			process = 0
+			conn.send('Enter your password: ')
+			data = conn.recv(1024)
+			
+			conn.send("==============================ADMINITRATOR MODE===================================\n")
+			conn.send("==================================================================================\n")
+			superuser = 1
+			process = 2
+
+			
+
+
+
 
 		if (process ==1):
 			for index, member in enumerate(users):
-				
 				if (data == member): #if user already come before
 					current_user = index
 					user_new_message[current_user] = [] #clean up this user's old post
@@ -125,7 +138,7 @@ def clientthread(conn):
 			process = 2 
 
 		#enter the selection: process2
-		elif(process == 2):
+		elif(process == 2 and superuser == 0):
 			time.sleep(0.5)
 			conn.send('\n\n')
 			conn.send('============================================================\n')
@@ -139,6 +152,21 @@ def clientthread(conn):
 			conn.send('      SELECT MENU OPTION: ')
 			process = 3
 		##choose the selection: process 3
+		elif(process == 2 and superuser ==1):
+			conn.send('============================================================\n')
+			conn.send('||    1) See messagecount since server started    ||\n\n')
+			conn.send('      SELECT MENU OPTION: ')
+			data = conn.recv(1024)
+			if(data[0:1] == '1'):
+				messagecount = 0
+				for i in range(len(user_message)):
+					for j in range(len(user_message[i])):
+						messagecount+=1
+
+				conn.send('\nTHERE ARE ')
+				conn.send(str(messagecount))
+				conn.send(' MESSAGES COUNTED SINCE SERVER STARTED\n\n\n')
+				time.sleep(1)
 		elif(process ==3):
 			data = conn.recv(1024)
 			if(data[0:1] == '1'): #see offline message
